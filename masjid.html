@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <canvas id="world" width="1000" height="500" style="border: 1px solid black;"></canvas>
+
+    <script>
+        // Inisialisasi canvas
+        let canvas = document.getElementById("world");
+        let context = canvas.getContext("2d");
+
+        // Membuat background langit
+        canvas.style.backgroundColor = "skyblue";
+
+        // Membuat Tanah
+        context.fillStyle = "green";
+        context.fillRect(0, canvas.height / 2 + 150, canvas.width, canvas.height)
+
+        // Membuat jalanan
+        context.fillStyle = "gray";
+        context.fillRect(0, canvas.height / 2 + 195, canvas.width, canvas.height)
+
+
+        // Membuat Matahari
+
+        function matahari() {
+            let sunX = 60;
+            let sunY = 60;
+            let sunR = 50;
+
+            context.beginPath();
+            context.arc(sunX, sunY, sunR, 0, 2 * Math.PI);
+            context.fillStyle = "yellow";
+            context.fill();
+            context.closePath();
+        }
+
+        matahari();
+
+        function createDome(x, y, r, color, widthEdge = true) {
+            // Membuat Kubah
+            context.fillStyle = color;
+            context.beginPath();
+            context.arc(x, y, r, Math.PI, 2 * Math.PI);
+
+            // Menutup Kubah
+            context.moveTo(x - r, y);
+            context.lineTo(x + r, y);
+
+            // Mewarnai dan menggaris kubah
+            context.lineWidth = r / 10;
+            context.fill();
+
+            if (widthEdge) {
+                // context.stroke();
+                context.beginPath();
+                context.moveTo(x, y - r);
+                context.lineTo(x, y - r - (r / 4));
+                context.stroke();
+
+                context.beginPath();
+                context.arc(x, y - r - (r / 4) - (r / 4), (r / 4), 1 / 4 * Math.PI, 3 / 2 * Math.PI);
+                context.stroke();
+            }
+        }
+
+        createDome(canvas.width / 2 - (2 * 80), canvas.height / 2 - 100, 35, "green");
+        createDome(canvas.width / 2, canvas.height / 2 - 30, 100, "green");
+        createDome(canvas.width / 2 + (2 * 80), canvas.height / 2 - 100, 35, "green");
+
+        // Membuat Menara
+        function createWall(x, y, width, height, color) {
+            context.fillStyle = color;
+            context.beginPath();
+            context.rect(x, y, width, height);
+            context.lineWidth = width / 10;
+            // context.stroke();
+            context.fill();
+        }
+
+        createWall(canvas.width / 2 - (2 * 105), canvas.height / 2 - 100, (2 * 50), 50, "orange");
+        createWall(canvas.width / 2 - (2 * 80) - 35, canvas.height / 2 - 50, (2 * 35), 200, "yellow");
+        createWall(canvas.width / 2 + (2 * 55), canvas.height / 2 - 100, (2 * 50), 50, "orange");
+        createWall(canvas.width / 2 + (2 * 80) - 35, canvas.height / 2 - 50, (2 * 35), 200, "yellow");
+
+        // Membuat teras
+        createWall(canvas.width / 2 - (2 * 70), canvas.height / 2 - 30, 280, 40, "brown");
+
+        // Membuat Trapesium 
+        function trapesium(x, y, upperWidth, lowerWidth) {
+            context.beginPath();
+            context.moveTo(x - upperWidth / 2, y);
+            context.lineTo(x + upperWidth / 2, y);
+            context.lineTo(x + lowerWidth / 2, y + 30);
+            context.lineTo(x - lowerWidth / 2, y + 30);
+            context.closePath();
+            context.fillStyle = "orange"; // Menggunakan gradiasi sebagai warna isi trapesium
+            context.fill();
+        }
+
+        trapesium(canvas.width / 2, canvas.height / 2 + 10, 280, 200);
+
+        // membuat bangunan
+        createWall(canvas.width / 2 - (2 * 50), canvas.height / 2 + 40, 200, 110, "yellow");
+
+
+        // Membuat Pintu
+        function createDoor(x, y, width, height, color) {
+            createDome(x, canvas.height / 2 + height, width / 2, color, false);
+            createWall(x - width / 2, canvas.height / 2 + height, width, height, color);
+        }
+
+        createDoor(canvas.width / 2 - (2 * 35), canvas.height / 2 + 100, 40, 75, "brown");
+        createDoor(canvas.width / 2, canvas.height / 2 + 100, 60, 75, "brown");
+        createDoor(canvas.width / 2 + (2 * 35), canvas.height / 2 + 100, 40, 75, "brown");
+
+        // Membuat tangga masjid
+        createWall(canvas.width / 2 - 100 - 100 - 15, canvas.height / 2 + 150, 430, 15, "orange");
+        createWall(canvas.width / 2 - 100 - 100 - 35, canvas.height / 2 + 150 + 15, 470, 15, "orange");
+        createWall(canvas.width / 2 - 100 - 100 - 50, canvas.height / 2 + 150 + 30, 500, 15, "orange");
+
+        // Membuat Tulisan 
+        context.fillStyle = "white";
+        context.font = "15pt sans-serif";
+        context.fillText("Masjid Jami NurulHuda", canvas.width / 2 - 100, canvas.height / 2 - 3, 200)
+    </script>
+</body>
+
+</html>
